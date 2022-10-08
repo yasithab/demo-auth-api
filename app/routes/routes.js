@@ -8,7 +8,10 @@ const bearerTokenTimeout = process.env.BEARER_TOKEN_TIMEOUT || '30s';
 router.get('/get', async (req, res) => {
     try {
         const data = await Model.find();
-        res.json(data)
+
+        // Filter unnecessary fields from the response
+        const mapped = data.map(({id, name, email, age}) => ({id, name, email, age}));
+        res.status(200).send(mapped)
     }
     catch (error) {
         res.status(500).json({ message: error.message })
@@ -19,7 +22,12 @@ router.get('/get', async (req, res) => {
 router.get('/get/:id', async (req, res) => {
     try {
         const data = await Model.findById(req.params.id);
-        res.json(data)
+        res.status(200).send({
+            id: data.id,
+            name: data.name,
+            email: data.email,
+            age: data.age
+        })
     }
     catch (error) {
         res.status(500).json({ message: error.message })
@@ -32,13 +40,19 @@ router.post('/post', verifyToken, async (req, res) => {
         if (err) {
             res.status(403).json({message: 'Unauthorized'})
         } else {
-            const data = new Model({
+            const records = new Model({
                 name: req.body.name,
+                email: req.body.email,
                 age: req.body.age
             })
             try {
-                const dataToSave = await data.save();
-                res.status(200).json(dataToSave)
+                const data = await records.save();
+                res.status(200).send({
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    age: data.age
+                })
             } catch (error) {
                 res.status(400).json({message: error.message})
             }
@@ -60,7 +74,12 @@ router.patch('/update/:id', verifyToken, async (req, res) => {
                 const result = await Model.findByIdAndUpdate(
                     id, updatedData, options
                 )
-                res.send(result)
+                res.status(200).send({
+                    id: result.id,
+                    name: result.name,
+                    email: result.email,
+                    age: result.age
+                })
             }
             catch (error) {
                 res.status(500).json({ message: error.message })
@@ -78,6 +97,7 @@ router.delete('/delete/:id', verifyToken, async (req, res) => {
             try {
                 const id = req.params.id;
                 const data = await Model.findByIdAndDelete(id)
+
                 res.status(200).json({ message: `The user ${data.name} has been removed` })
             }
             catch (error) {

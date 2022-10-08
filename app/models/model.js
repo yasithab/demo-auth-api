@@ -5,6 +5,11 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
+    email: {
+        required: true,
+        unique: true,
+        type: String
+    },
     age: {
         required: true,
         type: Number
