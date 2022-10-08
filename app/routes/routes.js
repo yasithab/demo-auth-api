@@ -71,14 +71,14 @@ router.patch('/update/:id', verifyToken, async (req, res) => {
                 const updatedData = req.body;
                 const options = { new: true };
 
-                const result = await Model.findByIdAndUpdate(
+                const data = await Model.findByIdAndUpdate(
                     id, updatedData, options
                 )
                 res.status(200).send({
-                    id: result.id,
-                    name: result.name,
-                    email: result.email,
-                    age: result.age
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    age: data.age
                 })
             }
             catch (error) {
