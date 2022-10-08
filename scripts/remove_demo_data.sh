@@ -8,7 +8,7 @@ set -e
 # USER CONFIGURATIONS
 # ======================================================================================================================================
 
-export BASE_URL="https://demo.yasitha.dev/api"
+export BASE_URL="http://localhost/api"
 
 # ======================================================================================================================================
 # DO NOT EDIT BELOW THIS LINE UNLESS YOU KNOW WHAT YOU ARE DOING
