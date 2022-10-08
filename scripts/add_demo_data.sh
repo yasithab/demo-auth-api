@@ -9,16 +9,13 @@ set -e
 # ======================================================================================================================================
 
 export BASE_URL="http://localhost/api"
-export DATA_FILE="./names.list"
+export DATA_FILE="./data.json"
 
 # ======================================================================================================================================
 # DO NOT EDIT BELOW THIS LINE UNLESS YOU KNOW WHAT YOU ARE DOING
 # ======================================================================================================================================
 
-while IFS="" read -r NAME || [ -n "${NAME}" ]
-do
-    # Generate Random Age
-    RANDOM_AGE=$(echo $[ ${RANDOM} % 90 + 10 ])
+jq -c '.[]' ${DATA_FILE} | while read USER; do
 
     ## GET-Token
     BEARER_TOKEN=$(curl -ks "${BASE_URL}/token" -H 'Content-Type: application/json' | jq -r '.token')
@@ -28,12 +25,13 @@ do
         -H 'Content-Type: application/json' \
         -H "Authorization: Bearer ${BEARER_TOKEN}" \
         -d $"{
-                \"name\": \"${NAME}\",
-                \"age\": ${RANDOM_AGE}
+              \"name\": \"$(echo ${USER} | jq -r '.FullName')\",
+              \"email\": \"$(echo ${USER} | jq -r '.Email')\",
+              \"age\": $(echo ${USER} | jq -r '.Age')
             }"
 
-    # Line Break                  
+    # Line Break
     printf "\n"
-done < "${DATA_FILE}"
+done
 
 # ======================================================================================================================================
