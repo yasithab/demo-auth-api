@@ -21,6 +21,7 @@ docker compose up -d
 
 ```bash
 cd scripts
+chmod +x add_demo_data.sh 
 bash ./add_demo_data.sh
 ```
 
@@ -28,6 +29,7 @@ bash ./add_demo_data.sh
 
 ```bash
 cd scripts
+chmod +x remove_demo_data.sh 
 bash ./remove_demo_data.sh
 ```
 
