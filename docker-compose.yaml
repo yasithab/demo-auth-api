@@ -13,6 +13,6 @@ services:
       - PORT=3000
       - NODE_ENV=development
       - DATABASE_URL=mongodb://mongodb:27017
-      - BEARER_TOKEN_TIMEOUT=30s
+      - BEARER_TOKEN_TIMEOUT=120s
     depends_on:
       - mongodb
