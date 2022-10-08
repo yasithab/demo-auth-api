@@ -78,7 +78,7 @@ router.delete('/delete/:id', verifyToken, async (req, res) => {
             try {
                 const id = req.params.id;
                 const data = await Model.findByIdAndDelete(id)
-                res.send(`Document with ${data.name} has been deleted..`)
+                res.status(200).json({ message: `The user ${data.name} has been removed` })
             }
             catch (error) {
                 res.status(400).json({ message: error.message })
